@@ -1,7 +1,6 @@
 Usage:
 ```
 ./podcastdl.py <podcast>.xml
-./gen_website.py <podcast>
 ```
 
 Directory structure:
@@ -20,6 +19,12 @@ Directory structure:
 |--- js/
 |------ mp3-player.js
 ```
+
+Serve:
+```
+./gen_website.py <podcast>
+```
+Maybe use something simple like customized [dropcast](https://github.com/amiechen/codrops-dropcast) to generate your website.
 
 Thanks to:  
 [kissgyorgy](https://github.com/kissgyorgy/simple-podcast-dl/blob/master/podcast_dl/podcast_dl.py)
