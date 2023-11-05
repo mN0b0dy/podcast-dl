@@ -1,3 +1,6 @@
+import os
+import sys
+
 KEY_IMAGE = "itunes:image"
 KEY_NAME = "itunes:name"
 KEY_OWNER = "itunes:owner"

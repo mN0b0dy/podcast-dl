@@ -54,7 +54,6 @@ def getitems(root=elems):
     ret = root.xpath("//item")
     #globals()['ret'] = ret
     abortif('ret is None')
-    ret.reverse()
     return ret
     
 '''
@@ -97,12 +96,28 @@ files = type("", (), { \
     "__init__": (lambda self, **kwargs: self.__dict__.update(kwargs)), \
     "__eq__": (lambda self, other: self.__dict__ == other.__dict__) } \
 )(mp3=[], img=[], txt=[])
+
+extra_count = 0
+for item in reversed(getitems()):
+    ep_title = getel(KEY_TITLE, item).text
+    ep_index = getel_noabort(KEY_EPISODE_NO, item)
+    is_extra = False
+    if len(ep_index) == 0:
+        ep_index = f'{extra_count:03d}'
+        extra_count += 1
+
 i=0
 for item in getitems():
     print("")
     ep_title = getel(KEY_TITLE, item).text
-    ep_index = getel(KEY_EPISODE_NO, item).text
-    ep_index = f'{int(ep_index):03d}'
+    ep_index = getel_noabort(KEY_EPISODE_NO, item)
+    is_extra = False
+    if len(ep_index) == 0:
+        ep_index = f'{extra_count:03d}'
+        extra_count -= 1
+        is_extra = True
+    else:
+        ep_index = f'{int(ep_index[0].text):03d}'
     if DEBUG:
         print(f'{ep_index} - {ep_title}')
 
@@ -157,6 +172,8 @@ for item in getitems():
         print("")
     else:
         secho(f"Episode: {ep_fmt}", fg='blue')
+    if is_extra:
+        ep_fmt = "Extra_" + ep_fmt
 
     # Episode Audio
     ep_filename = f"{outdir}/mp3/ep{ep_fmt}_audio.mp3"
