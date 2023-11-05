@@ -1,3 +1,7 @@
+Find RSS feed for the podcast you want:  
+- https://www.listennotes.com/  
+- https://getrssfeed.com/  
+
 Usage:
 ```
 ./podcastdl.py <podcast>.xml
