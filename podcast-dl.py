@@ -99,7 +99,6 @@ files = type("", (), { \
 
 extra_count = 0
 for item in reversed(getitems()):
-    ep_title = getel(KEY_TITLE, item).text
     ep_index = getel_noabort(KEY_EPISODE_NO, item)
     is_extra = False
     if len(ep_index) == 0:
@@ -109,7 +108,12 @@ for item in reversed(getitems()):
 i=0
 for item in getitems():
     print("")
-    ep_title = getel(KEY_TITLE, item).text
+    ep_title = getel_noabort(KEY_TITLE, item)
+    if len(ep_title) == 0:
+        ep_title = getel("title", item).text
+    else:
+        ep_title = ep_title[0].text
+
     ep_index = getel_noabort(KEY_EPISODE_NO, item)
     is_extra = False
     if len(ep_index) == 0:
@@ -131,7 +135,20 @@ for item in getitems():
     fmtdate = dtparser(ep_date).strftime('%Y%m%d_%H%M%S')
     #print(f'    Date: {fmtdate}')
     
-    ep_author = getel(KEY_AUTHOR, item).text
+    ep_author = getel_noabort(KEY_AUTHOR, item)
+    if len(ep_author) == 0:
+        ep_author = getel_noabort("author", item)
+        if len(ep_author) > 0:
+            ep_author = ep_author[0].text
+        else:
+            ep_author = getel_noabort("creator", item)
+            if len(ep_author) > 0:
+                ep_author = ep_author[0].text
+            else:
+                ep_author = author
+    else:
+        ep_author = ep_author[0].text
+
     if DEBUG:
         print(f'    Author: {ep_author}')
 

@@ -13,6 +13,14 @@ KEY_EPISODE_NO = "itunes:episode"
 KEY_DURATION = "itunes:duration"
 
 def minutes(seconds):
+    seconds = str(seconds).strip()
+    if ":" in seconds:
+        seconds = seconds.split(":")
+        if seconds.count(":") == 2:
+            return f'{seconds[1]} min'
+        else:
+            # count==3?
+            return f'{seconds[2]} min'
     return f'{int(int(seconds)/60)} min'
 
 import inspect
