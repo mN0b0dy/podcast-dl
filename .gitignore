@@ -1,0 +1,10 @@
+*.swo
+*.swp
+__pycache__
+
+.fuse*
+
+1856207
+mp3
+txt
+img
