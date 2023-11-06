@@ -106,7 +106,6 @@ for item in reversed(items):
         ep_index = f'{extra_count:03d}'
         extra_count += 1
         is_extra = True
-    '''
     if not is_extra:
         ep_type = getel_noabort(KEY_EPISODE_TYPE, item)
         if len(ep_type) > 0:
@@ -123,7 +122,6 @@ for item in reversed(items):
             else:
                 ep_title = ep_title[0].text
             print(f'Found Extra episode: [{ep_type}] {ep_index} - {ep_title}')
-    '''
 
 if extra_count == len(items):
     no_extra = True
@@ -146,7 +144,6 @@ for item in getitems():
             is_extra = True
     else:
         ep_index = f'{int(ep_index[0].text):03d}'
-    '''
     if not (no_extra or is_extra):
         ep_type = getel_noabort(KEY_EPISODE_TYPE, item)
         if len(ep_type) > 0:
@@ -155,7 +152,6 @@ for item in getitems():
                 ep_index = f'{extra_count:03d}'
                 extra_count -= 1
                 is_extra = True
-    '''
 
     if DEBUG:
         print(f'{ep_index} - {ep_title}')
@@ -229,7 +225,7 @@ for item in getitems():
 
     # Episode Audio
     ep_filename = f"{outdir}/mp3/ep{ep_fmt}_audio.mp3"
-
+    is_new = False
     files.mp3.append(ep_filename)
     if not os.path.isfile(ep_filename):
         download(ep_dlurl, ep_filename)
@@ -238,6 +234,7 @@ for item in getitems():
         if int(sz) < int(ep_fsize):
             secho(f"    RE-DOWNLOADING (local:{sz} VS remote:{ep_fsize})", fg='yellow')
             download(ep_dlurl, ep_filename)
+            is_new = True
         else:
             if DEBUG:
                 secho(f"    [EXISTS] {os.path.basename(ep_filename)} ({sz}/{ep_fsize})", fg='yellow')
@@ -276,7 +273,8 @@ for item in getitems():
         secho(f'    [OK] {os.path.basename(epdesc_filename)}', fg='green')
 
     # Tag mp3 audio
-    tagmp3(ep_filename, title=ep_title, front_img=img_main, track_id=ep_index, cmt=ep_desc)
+    if is_new:
+        tagmp3(ep_filename, title=ep_title, front_img=img_main, track_id=ep_index, cmt=ep_desc)
 
     i += 1
     if DEBUG:
