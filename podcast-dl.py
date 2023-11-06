@@ -106,6 +106,7 @@ for item in reversed(items):
         ep_index = f'{extra_count:03d}'
         extra_count += 1
         is_extra = True
+    '''
     if not is_extra:
         ep_type = getel_noabort(KEY_EPISODE_TYPE, item)
         if len(ep_type) > 0:
@@ -122,6 +123,7 @@ for item in reversed(items):
             else:
                 ep_title = ep_title[0].text
             print(f'Found Extra episode: [{ep_type}] {ep_index} - {ep_title}')
+    '''
 
 if extra_count == len(items):
     no_extra = True
@@ -144,6 +146,7 @@ for item in getitems():
             is_extra = True
     else:
         ep_index = f'{int(ep_index[0].text):03d}'
+    '''
     if not (no_extra or is_extra):
         ep_type = getel_noabort(KEY_EPISODE_TYPE, item)
         if len(ep_type) > 0:
@@ -152,6 +155,7 @@ for item in getitems():
                 ep_index = f'{extra_count:03d}'
                 extra_count -= 1
                 is_extra = True
+    '''
 
     if DEBUG:
         print(f'{ep_index} - {ep_title}')
