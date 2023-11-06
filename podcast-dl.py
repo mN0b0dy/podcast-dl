@@ -16,7 +16,6 @@ from const import *
 from downloaders import async_download as download
 from mp3 import tagmp3
 
-#DEBUG=True
 DEBUG=0
 
 inpf = sys.argv[1]
@@ -101,12 +100,32 @@ items = getitems()
 extra_count = 0
 no_extra = False
 for item in reversed(items):
+    is_extra = False
     ep_index = getel_noabort(KEY_EPISODE_NO, item)
     if len(ep_index) == 0:
         ep_index = f'{extra_count:03d}'
         extra_count += 1
+        is_extra = True
+    if not is_extra:
+        ep_type = getel_noabort(KEY_EPISODE_TYPE, item)
+        if len(ep_type) > 0:
+            ep_type = ep_type[0].text.strip()
+            if ep_type != "full":
+                ep_index = f'{extra_count:03d}'
+                extra_count += 1
+                is_extra = True
+    if DEBUG:
+        if is_extra:
+            ep_title = getel_noabort(KEY_TITLE, item)
+            if len(ep_title) == 0:
+                ep_title = getel("title", item).text
+            else:
+                ep_title = ep_title[0].text
+            print(f'Found Extra episode: [{ep_type}] {ep_index} - {ep_title}')
+
 if extra_count == len(items):
     no_extra = True
+
 i=0
 for item in getitems():
     print("")
@@ -125,6 +144,14 @@ for item in getitems():
             is_extra = True
     else:
         ep_index = f'{int(ep_index[0].text):03d}'
+    if not (no_extra or is_extra):
+        ep_type = getel_noabort(KEY_EPISODE_TYPE, item)
+        if len(ep_type) > 0:
+            ep_type = ep_type[0].text.strip()
+            if ep_type != "full":
+                ep_index = f'{extra_count:03d}'
+                extra_count -= 1
+                is_extra = True
 
     if DEBUG:
         print(f'{ep_index} - {ep_title}')
@@ -249,6 +276,6 @@ for item in getitems():
 
     i += 1
     if DEBUG:
-        if i==2:
+        if i==4:
             break
 # EOF

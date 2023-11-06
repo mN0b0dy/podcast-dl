@@ -10,6 +10,7 @@ KEY_CATEGORY = "itunes:category"
 # Item
 KEY_TITLE = "itunes:title"
 KEY_EPISODE_NO = "itunes:episode"
+KEY_EPISODE_TYPE = "itunes:episodeType"
 KEY_DURATION = "itunes:duration"
 
 def minutes(seconds):
