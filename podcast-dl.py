@@ -97,14 +97,16 @@ files = type("", (), { \
     "__eq__": (lambda self, other: self.__dict__ == other.__dict__) } \
 )(mp3=[], img=[], txt=[])
 
+items = getitems()
 extra_count = 0
-for item in reversed(getitems()):
+no_extra = False
+for item in reversed(items):
     ep_index = getel_noabort(KEY_EPISODE_NO, item)
-    is_extra = False
     if len(ep_index) == 0:
         ep_index = f'{extra_count:03d}'
         extra_count += 1
-
+if extra_count == len(items):
+    no_extra = True
 i=0
 for item in getitems():
     print("")
@@ -119,9 +121,11 @@ for item in getitems():
     if len(ep_index) == 0:
         ep_index = f'{extra_count:03d}'
         extra_count -= 1
-        is_extra = True
+        if not no_extra:
+            is_extra = True
     else:
         ep_index = f'{int(ep_index[0].text):03d}'
+
     if DEBUG:
         print(f'{ep_index} - {ep_title}')
 
